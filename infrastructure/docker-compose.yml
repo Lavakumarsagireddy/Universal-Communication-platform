@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: universal-communication-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: universal_communication
+      POSTGRES_USER: uc_app
+      POSTGRES_PASSWORD: uc_dev_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uc_app -d universal_communication"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
